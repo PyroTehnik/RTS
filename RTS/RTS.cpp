@@ -13,11 +13,13 @@
 
 typedef struct
 {
-    float x, y, width, heigth, dx, dy, speed;
+    float x, y, width, heigth, speed;
     HBITMAP hBitmap;
 } sprite;
 
-sprite ;
+sprite unit;
+sprite vehicle;
+sprite factory;
 
 struct
 {
@@ -82,6 +84,21 @@ void ShowBitmap(HDC hDC,int x, int y,int x1,int y1,HBITMAP hBitmapBall, bool alp
     }
 
     DeleteDC(hMemDC);
+}
+
+void InitWindows()
+{
+    SetProcessDPIAware();
+    window.hWnd = CreateWindow("edit", 0, WS_POPUP | WS_VISIBLE | WS_MAXIMIZE, 0, 0, 0, 0, 0, 0, 0, 0);
+
+    RECT r;
+    GetClientRect(window.hWnd, &r);
+    window.device_context = GetDC(window.hWnd);
+    window.width = r.right - r.left;
+    window.heigth = r.bottom - r.top;
+    window.context = CreateCompatibleDC(window.device_context);
+    SelectObject(window.context, CreateCompatibleBitmap(window.device_context, window.width, window.heigth));
+    GetClientRect(window.hWnd, &r);
 }
 
 int APIENTRY wWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPWSTR lpCmdLine,int nCmdShow)
